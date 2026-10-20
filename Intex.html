@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Цифрлық сауаттылық — тест</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e6f2ff;--card:#fff;--ink:#14284b;--mute:#52668a;--line:#c9dcf5;--accent:#2f6bff;--ok:#12a150;--okbg:#dcf6e7;--bad:#d93a3a;--badbg:#fde4e4;--sun:#ffb81f;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a33;--card:#17274a;--ink:#eaf1ff;--mute:#9db0d6;--line:#2c4170;--accent:#6c97ff;--ok:#43d68a;--okbg:#12402b;--bad:#ff7b7b;--badbg:#4a2227;--sun:#ffc84a}}
+:root[data-theme="dark"]{--bg:#0e1a33;--card:#17274a;--ink:#eaf1ff;--mute:#9db0d6;--line:#2c4170;--accent:#6c97ff;--ok:#43d68a;--okbg:#12402b;--bad:#ff7b7b;--badbg:#4a2227;--sun:#ffc84a}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Rubik","Segoe UI",Roboto,Arial,sans-serif;line-height:1.5;min-height:100vh}
+main{max-width:680px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.15;margin:8px 0 8px;font-weight:700}
+.lead{color:var(--mute);margin:0 0 24px;font-size:1.05rem}
+.grades{display:grid;gap:14px}
+.grade{display:flex;align-items:center;gap:16px;width:100%;text-align:left;font:inherit;color:inherit;background:var(--card);border:3px solid var(--line);border-radius:22px;padding:16px 18px;cursor:pointer;transition:transform .12s,border-color .12s}
+.grade:hover{border-color:var(--accent);transform:translateY(-2px)}
+.grade:focus-visible,.opt:focus-visible,.btn:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.num{flex:none;width:68px;height:68px;border-radius:50%;display:grid;place-items:center;font-size:2.2rem;font-weight:700;color:#fff}
+.g2 .num{background:#ff7a45}.g3 .num{background:#2f6bff}.g4 .num{background:#12a150}.g5 .num{background:#8a4dff}.g6 .num{background:#d6287f}.g7 .num{background:#0a8fa3}.g8 .num{background:#cc4a1a}
+.grp{margin:10px 0 0;font-size:1.1rem;color:var(--mute);font-weight:500}.chip{display:inline-block;background:var(--sun);color:#14284b;font-weight:700;font-size:.9rem;border-radius:99px;padding:3px 12px;margin-bottom:10px}.chip:empty{display:none}
+.grade b{display:block;font-size:1.25rem}.grade span{color:var(--mute);font-size:.95rem}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.back{background:var(--card);border:3px solid var(--accent);border-radius:14px;color:var(--accent);font:inherit;font-weight:700;cursor:pointer;padding:8px 16px}.back:hover{background:var(--accent);color:#fff}.back:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.count{color:var(--mute);font-weight:500}
+.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;width:0;background:var(--sun);border-radius:99px;transition:width .3s}
+.q{background:var(--card);border-radius:24px;padding:22px 20px;border:3px solid var(--line)}
+.q h2{font-size:clamp(1.25rem,4.6vw,1.6rem);line-height:1.3;margin:0 0 18px}
+.opts{display:grid;gap:10px}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-size:1.08rem;color:inherit;background:var(--bg);border:3px solid var(--line);border-radius:16px;padding:13px 16px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.note{margin-top:16px;padding:12px 14px;border-radius:14px;background:var(--bg);color:var(--ink);display:none}
+.note.show{display:block}
+.btn{margin-top:18px;font:inherit;font-weight:700;font-size:1.05rem;color:#fff;background:var(--accent);border:0;border-radius:16px;padding:13px 26px;cursor:pointer}
+.btn.alt{background:var(--card);color:var(--accent);border:3px solid var(--accent);margin-left:8px}
+.res{text-align:center;background:var(--card);border:3px solid var(--line);border-radius:24px;padding:30px 20px}
+.stars{font-size:2.6rem;letter-spacing:6px;color:var(--sun)}
+.stars .off{opacity:.25}
+.score{font-size:2.4rem;font-weight:700;margin:6px 0}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:12px}.col{display:grid;gap:10px;align-content:start}.mi,.mn{font:inherit;color:inherit;background:var(--bg);border:3px solid var(--line);border-radius:16px;padding:10px;cursor:pointer;min-height:64px}.mi{font-size:2.4rem;line-height:1}.mn{font-size:1.05rem}.mi.sel{border-color:var(--accent);background:var(--card);box-shadow:0 0 0 3px var(--accent)}.mi.ok,.mn.ok{background:var(--okbg);border-color:var(--ok);cursor:default}.mn.bad{background:var(--badbg);border-color:var(--bad)}.mi:disabled,.mn:disabled{color:var(--ink)}.mi:focus-visible,.mn:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.hidden{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<section id="home">
+  <h1>Информатика және цифрлық сауаттылық тесті</h1>
+  <p class="lead">Сыныбыңды таңда да, 10 сұраққа жауап бер: 5 тест және 5 сурет сәйкестендіру. Әр кіргенде сұрақтар жаңарады.</p>
+  <div class="grades"><h3 class="grp">Цифрлық сауаттылық (2–4 сыныптар)</h3>
+    <button class="grade g2" data-g="2"><div class="num">2</div><div><b>2-сынып</b><span>Компьютер құрылғылары және қауіпсіздік</span></div></button>
+    <button class="grade g3" data-g="3"><div class="num">3</div><div><b>3-сынып</b><span>Интернет, файлдар және құпиясөз</span></div></button>
+    <button class="grade g4" data-g="4"><div class="num">4</div><div><b>4-сынып</b><span>Пошта, қорғаныс және алгоритм</span></div></button>
+    <h3 class="grp">Информатика және жасанды интеллект (5–8 сыныптар)</h3>
+    <button class="grade g5" data-g="5"><div class="num">5</div><div><b>5-сынып</b><span>Ақпарат, құрылғылар және ЖИ-ге кіріспе</span></div></button>
+    <button class="grade g6" data-g="6"><div class="num">6</div><div><b>6-сынып</b><span>Байт, екілік жүйе және машиналық оқыту</span></div></button>
+    <button class="grade g7" data-g="7"><div class="num">7</div><div><b>7-сынып</b><span>Python, желі және нейрондық желілер</span></div></button>
+    <button class="grade g8" data-g="8"><div class="num">8</div><div><b>8-сынып</b><span>Деректер қоры, шифрлау және ЖИ этикасы</span></div></button>
+  </div>
+</section>
+<section id="quiz" class="hidden">
+  <div class="top"><button class="back" id="back">← Сыныпты таңдау</button><span class="count" id="count"></span></div>
+  <div class="bar"><i id="fill"></i></div>
+  <div class="q">
+    <div class="chip" id="chip"></div>
+    <h2 id="qt"></h2>
+    <div class="opts" id="opts"></div>
+    <div class="match hidden" id="match"></div>
+    <div class="note" id="note" aria-live="polite"></div>
+    <button class="btn hidden" id="next">Келесі сұрақ</button>
+  </div>
+</section>
+<section id="result" class="hidden">
+  <div class="res">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="score"></div>
+    <p id="msg" class="lead"></p>
+    <button class="btn" id="again">Қайта тапсыру</button><button class="btn alt" id="home2">Сыныпты таңдау</button>
+  </div>
+</section>
+</main>
+<script>
+// Әр сұрақ: [сұрақ, дұрыс жауап, қате жауаптар..., түсіндірме]
+var DATA={
+2:[
+["Компьютердің экранында суретті көрсететін бөлігі қайсы?","Монитор","Тышқан","Пернетақта","Монитор — ақпаратты экранға шығарады."],
+["Мәтін теру үшін қандай құрылғы керек?","Пернетақта","Монитор","Динамик","Әріптер мен сандарды пернетақтамен тереміз."],
+["Курсорды экранда жылжытатын құрылғы қайсы?","Тышқан","Принтер","Микрофон","Тышқанды қозғалтсақ, курсор да қозғалады."],
+["Дыбыс шығаратын құрылғыны таңда.","Динамик","Сканер","Тышқан","Динамик (колонка) музыка мен дауысты естуге көмектеседі."],
+["Компьютерде отырғанда көзіңді қалай сақтайсың?","Әр 15–20 минут сайын демаламын","Түні бойы ойнаймын","Экранға өте жақын отырамын","Үзіліс жасап, көзге демалыс беру керек."],
+["Құпиясөзіңді кімге айтуға болады?","Тек ата-анама","Барлық достарыма","Желідегі бейтаныс адамға","Құпиясөзді тек сенімді ересек адам біледі."],
+["Ақпаратты сақтайтын кішкентай құрылғы қайсы?","Флешка","Тышқан","Монитор","Флешкада файлдарды сақтап, басқа компьютерге апаруға болады."],
+["Компьютерді дұрыс қалай өшіреміз?","Мәзір арқылы «Өшіру» батырмасымен","Розеткадан суырып тастаймыз","Мониторды жабамыз","Дұрыс өшірмесек, файлдар бүлінуі мүмкін."]
+],
+3:[
+["Интернет дегеніміз не?","Бүкіл әлемдегі компьютерлерді жалғайтын желі","Бір ғана бағдарлама","Компьютердің бір бөлігі","Интернет арқылы ақпаратпен бөлісеміз."],
+["Сайттарды ашуға арналған бағдарлама қалай аталады?","Браузер","Калькулятор","Принтер","Chrome, Safari — браузерлер."],
+["Файл дегеніміз не?","Аты бар ақпарат жинағы","Компьютердің экраны","Желі сымы","Мәтін, сурет, музыка — бәрі файл болып сақталады."],
+["Папка не үшін керек?","Файлдарды реттеп сақтау үшін","Дыбыс шығару үшін","Вирус табу үшін","Папка шкафтағы сөре сияқты, файлдар ретімен тұрады."],
+["Қайсысы ең мықты құпиясөз?","Aq7#mK29","12345","мен өзім","Әріп, сан және белгі қосылған құпиясөз мықты болады."],
+["Желіде бейтаныс адам кездесуге шақырса, не істейсің?","Бірден ата-анама айтамын","Келісемін","Мекенжайымды жазамын","Бейтаныс адамдармен кездесуге болмайды, ересектерге айту керек."],
+["Мәтіндік құжат жасайтын бағдарлама қайсы?","Word","Paint","Калькулятор","Word-та мәтін теріп, безендіруге болады."],
+["Ctrl + C пернелері не істейді?","Көшіреді","Өшіреді","Сақтайды","Ctrl + C — көшіру, Ctrl + V — қою."]
+],
+4:[
+["Электрондық пошта мекенжайында қандай белгі болады?","@","#","%","Мысалы: aigerim@mail.kz."],
+["Фишинг деген не?","Жалған сайт немесе хабар арқылы деректі ұрлау","Файлды көшіру","Суретті безендіру","Күмәнді сілтемелерді баспа, құпиясөзіңді жазба."],
+["Компьютерді вирустан қорғайтын бағдарлама қайсы?","Антивирус","Браузер","Ойын","Антивирус зиянды бағдарламаларды табады."],
+["Ctrl + V пернелері не істейді?","Көшірілген мәтінді қояды","Мәтінді өшіреді","Бағдарламаны жабады","Алдымен көшіреміз (Ctrl + C), сосын қоямыз."],
+["Слайдтар жасайтын бағдарлама қайсы?","PowerPoint","Блокнот","Антивирус","PowerPoint-те презентация жасаймыз."],
+["Интернеттегі ақпараттың дұрыстығын қалай тексереміз?","Бірнеше сенімді дереккөзбен салыстырамыз","Бірінші көрген сайтқа сенеміз","Көп лайк жиналғанына қараймыз","Бір дереккөз жеткіліксіз, салыстыру керек."],
+["Алгоритм дегеніміз не?","Әрекеттердің ретімен жазылған тізбегі","Компьютер түрі","Интернет сайты","Тамақ рецепті де алгоритм сияқты."],
+["Желіде біреу мазақтаса, не істеу керек?","Скриншот алып, ата-анаға немесе мұғалімге айту","Қайтарып мазақтау","Ешкімге айтпау","Дәлел сақтап, ересектерден көмек сұрау маңызды."]
+]};
+var $=function(i){return document.getElementById(i)};
+DATA[2]=DATA[2].concat([
+["Қай құрылғы қағазға басып шығарады?","Принтер","Монитор","Тышқан","Принтер мәтін мен суретті қағазға шығарады."],
+["Компьютерде ойнауға көп уақыт кетсе, не істейсің?","Уақытты шектеп, серуендеймін","Таңға дейін ойнаймын","Тамақ ішпеймін","Денсаулық үшін экран алдындағы уақытты шектеу керек."]]);
+DATA[3]=DATA[3].concat([
+["Wi-Fi не үшін керек?","Интернетке сымсыз қосылу үшін","Файлды өшіру үшін","Дыбыс шығару үшін","Wi-Fi арқылы құрылғы интернетке қосылады."],
+["Қай файл сурет болып табылады?","kitap.jpg","kitap.mp3","kitap.docx","JPG — сурет файлының форматы."]]);
+DATA[4]=DATA[4].concat([
+["Қай хабарлама күмәнді?","«Сыйлық ұттың! Мына сілтемені бас»","Мұғалімнің сабақ жоспары","Мектеп сайтының жаңалығы","Күмәнді сілтемелерді баспау керек."],
+["Бұлтты сақтау дегеніміз не?","Файлдарды интернеттегі серверде сақтау","Ауа райын көрсету","Компьютерді салқындату","Файлға кез келген құрылғыдан кіруге болады."]]);
+// Суретпен сәйкестендіру: [тақырып, [сурет, атауы], ...]
+var MATCH={
+2:[["Құрылғыларды тап",["🖥️","Монитор"],["⌨️","Пернетақта"],["🖱️","Тышқан"]],
+["Не істейді?",["🖨️","Принтер"],["🔊","Динамик"],["🎤","Микрофон"]],
+["Құрылғыларды тап",["📷","Камера"],["🎧","Құлаққап"],["💻","Ноутбук"]],
+["Құрылғыларды тап",["📱","Телефон"],["⌚","Смарт-сағат"],["🎮","Ойын консолі"]],
+["Қауіпсіздік",["🔒","Құпиясөз"],["👨‍👩‍👧","Ата-ана"],["🦠","Вирус"]],
+["Қуат және байланыс",["🔋","Батарея"],["🔌","Қуат сымы"],["📶","Wi-Fi"]],
+["Интернет",["🌐","Интернет"],["📧","Пошта"],["🔍","Іздеу"]]],
+3:[["Атын тап",["🌐","Интернет"],["📁","Папка"],["📄","Файл"]],
+["Әрекеттер",["📋","Көшіру"],["✂️","Қиып алу"],["🗑️","Өшіру"]],
+["Әрекеттер",["💾","Сақтау"],["🖨️","Басып шығару"],["📤","Жіберу"]],
+["Қауіпсіздік",["🛡️","Антивирус"],["⚠️","Күмәнді сілтеме"],["🔒","Мықты құпиясөз"]],
+["Файл түрлері",["📝","Мәтін"],["🖼️","Сурет"],["🎵","Музыка"]],
+["Бағдарламалар",["🎨","Сурет салу"],["🧮","Калькулятор"],["📅","Күнтізбе"]],
+["Желі",["📶","Wi-Fi"],["🔍","Іздеу жүйесі"],["📧","Пошта"]]],
+4:[["Атын тап",["📧","Электрондық пошта"],["🌐","Браузер"],["🛡️","Антивирус"]],
+["Бағдарламалар",["📊","Кесте"],["🎞️","Презентация"],["📝","Мәтін құжаты"]],
+["Қауіп пен қорғаныс",["🎣","Фишинг"],["🦠","Вирус"],["🛡️","Қорғаныс"]],
+["Бағдарламалау",["🤖","Робот"],["🧩","Алгоритм"],["💻","Бағдарламалау"]],
+["Байланыс",["💬","Чат"],["📹","Бейнеқоңырау"],["✉️","Хат"]],
+["Сақтау",["☁️","Бұлтты сақтау"],["💾","Флешка"],["📷","Сурет"]],
+["Мазақтаса не істеу керек?",["📸","Дәлел сақтау"],["👩‍🏫","Көмек сұрау"],["🚫","Жауап қайтармау"]]]};
+// 5–8 сынып: информатика (И) және жасанды интеллект (Ж) бөлімдері
+var SI="Информатика",SA="Жасанды интеллект";
+var INF={
+5:{mc:[["Ақпарат дегеніміз не?","Қоршаған әлем туралы мәліметтер","Тек компьютердегі файл","Тек кітаптағы мәтін","Ақпарат — адамға белгілі болатын кез келген мәлімет."],
+["Қайсысы бағдарламалық қамтамаға жатады?","Операциялық жүйе","Монитор","Пернетақта","Монитор мен пернетақта — аппараттық қамтама, ал бағдарлама — оны басқаратын нұсқаулар."],
+["Компьютердің «миы» деп қай құрылғыны атайды?","Процессор","Тышқан","Динамик","Процессор барлық есептеулерді орындайды."],
+["Кеңейтілімі .txt болатын файл қандай?","Мәтіндік файл","Сурет","Музыка","TXT — қарапайым мәтін файлы."]],
+mt:[["Құрылғы түрлері",["🧠","Процессор"],["💾","Жад"],["🖥️","Монитор"]],["Файл түрлері",["📝","Мәтін"],["🎞️","Бейне"],["🎵","Аудио"]],["Кіріс және шығыс",["⌨️","Пернетақта"],["🖱️","Тышқан"],["🖨️","Принтер"]]]},
+6:{mc:[["1 байт неше битке тең?","8","4","16","1 байт = 8 бит."],
+["Екілік санау жүйесінде қандай цифрлар бар?","0 және 1","0-ден 9-ға дейін","1 және 2","Компьютер ақпаратты 0 және 1 арқылы сақтайды."],
+["Блок-схемада шартты тексеруді қандай фигура көрсетеді?","Ромб","Тіктөртбұрыш","Сопақша","Ромб — «иә/жоқ» таңдауы."],
+["1 килобайт шамамен неше байт?","1024","100","8","1 КБ = 1024 байт."]],
+mt:[["Блок-схема фигуралары",["🔷","Шарт"],["🟦","Әрекет"],["⭕","Басы мен соңы"]],["Бағдарламалар",["🎨","Графикалық редактор"],["🧮","Электрондық кесте"],["📝","Мәтін редакторы"]],["Желі",["📡","Сигнал"],["🌐","Интернет"],["📶","Wi-Fi"]]]},
+7:{mc:[["Python-да экранға мәтін шығару командасы қайсы?","print()","input()","len()","print() мәтінді экранға шығарады."],
+["Айнымалы дегеніміз не?","Мәнді сақтайтын аты бар жад ұяшығы","Бағдарлама қатесі","Файл түрі","Мысалы: x = 5."],
+["Желідегі құрылғыны анықтайтын мекенжай қалай аталады?","IP-мекенжай","Құпиясөз","Файл аты","IP арқылы құрылғылар бір-бірін табады."],
+["Цикл не үшін қолданылады?","Әрекетті бірнеше рет қайталау үшін","Бағдарламаны өшіру үшін","Файлды сақтау үшін","for және while — цикл түрлері."]],
+mt:[["Python командалары",["🖨️","print"],["⌨️","input"],["🔁","for"]],["Желі",["🏠","Үй желісі"],["🌍","Интернет"],["🔀","Роутер"]],["Бағдарламалау тілдері",["🐍","Python"],["🐱","Scratch"],["🌐","HTML"]]]},
+8:{mc:[["Деректер қоры не үшін керек?","Ақпаратты ретімен сақтап, іздеу үшін","Суретті безендіру үшін","Дыбыс шығару үшін","Мысалы, мектеп оқушыларының тізімі."],
+["Python-да шартты тексеру операторы қайсы?","if","print","for","if ... else — тармақталу операторы."],
+["Деректерді шифрлау не үшін керек?","Бөтен адамнан қорғау үшін","Файлды үлкейту үшін","Интернетті жылдамдату үшін","Шифрланған деректі кілті бар адам ғана оқиды."],
+["Екілік 101 саны ондық жүйеде нешеге тең?","5","3","10","1·4 + 0·2 + 1·1 = 5."]],
+mt:[["Деректер қоры",["🗄️","Кесте"],["🔑","Кілт"],["🔎","Сұраныс"]],["Шифрлау",["🔐","Шифрлау"],["🗝️","Кілт"],["🔓","Дешифрлау"]],["Python деректері",["🔢","Сан"],["🔤","Жол"],["📋","Тізім"]]]}};
+var AI={
+5:{mc:[["Жасанды интеллект (ЖИ) дегеніміз не?","Үйренуге және есеп шешуге тырысатын компьютерлік жүйе","Тек робот","Интернет желісі","ЖИ деректерден үйреніп, тапсырмаларды орындайды."],
+["Қайсысы жасанды интеллект мысалы?","Дауыстық көмекші","Қарапайым калькулятор","Қағаз кітап","Дауыстық көмекші сөзді түсініп, жауап береді."],
+["ЖИ-мен сөйлескенде жеке деректерді жазуға бола ма?","Жоқ, болмайды","Иә, әрқашан","Тек түнде","Мекенжай, құпиясөз сияқты деректерді желіде бөлісуге болмайды."]],
+mt:[["ЖИ қайда қолданылады?",["🚗","Өздігінен жүретін көлік"],["🗣️","Дауыстық көмекші"],["🌐","Аудармашы"]],["ЖИ бағыттары",["🤖","Робот"],["👁️","Компьютерлік көру"],["💬","Чат-бот"]],["Қауіпсіздік",["🔒","Деректерді қорғау"],["👤","Жеке ақпарат"],["⚠️","Жалған ақпарат"]]]},
+6:{mc:[["Машиналық оқыту дегеніміз не?","Компьютердің мысалдардан өзі үйренуі","Компьютерді қолмен жөндеу","Бағдарламаны көшіру","Модель деректерден заңдылықтарды табады."],
+["ЖИ-ге қойылатын сұрақ мәтіні қалай аталады?","Промпт","Пароль","Файл","Промпт неғұрлым нақты болса, жауап соғұрлым жақсы."],
+["ЖИ берген жауапқа қалай қарау керек?","Тексеріп, басқа дереккөзбен салыстыру","Бәріне сене беру","Тексермей көшіру","ЖИ қателесуі мүмкін."]],
+mt:[["ЖИ мүмкіндіктері",["🖼️","Сурет жасау"],["🎙️","Дауысты тану"],["✍️","Мәтін жазу"]],["Деректер",["📊","Статистика"],["🗂️","Деректер жинағы"],["🔍","Іздеу"]],["Қауіп-қатер",["🕵️","Деректі ұрлау"],["🎭","Жалған бейне"],["📰","Жалған жаңалық"]]]},
+7:{mc:[["Нейрондық желі неден шабыттанған?","Адам миының жұмысынан","Күн жүйесінен","Қағаз кітаптардан","Нейрондық желі байланысқан «нейрондардан» тұрады."],
+["ЖИ-ді оқыту үшін ең алдымен не керек?","Деректер","Принтер","Монитор","Деректер көп әрі сапалы болса, модель жақсы үйренеді."],
+["Дипфейк деген не?","ЖИ жасаған жалған бейне немесе дауыс","Антивирус түрі","Сайт атауы","Дипфейкке сенбес бұрын тексеру керек."]],
+mt:[["ЖИ құралдары",["💬","Чат-бот"],["🎨","Сурет генераторы"],["🌐","Аудармашы"]],["Нейрондық желі",["🧠","Нейрон"],["📥","Кіріс деректер"],["📤","Нәтиже"]],["ЖИ этикасы",["⚖️","Әділдік"],["🔐","Құпиялылық"],["🙋","Адам бақылауы"]]]},
+8:{mc:[["Бақылаумен оқыту дегеніміз не?","Модельді дұрыс жауабы бар мысалдармен оқыту","Модельді оқытпау","Деректерді өшіру","Мысалы, суреттерге «мысық» немесе «ит» деген белгі қойылады."],
+["ЖИ шешіміндегі біржақтылық неден туады?","Оқыту деректерінің біржақтылығынан","Монитор өлшемінен","Интернет жылдамдығынан","Деректер біржақты болса, ЖИ шешімі де біржақты болады."],
+["ЖИ жасаған мәтінді қалай қолдану дұрыс?","Дереккөзді көрсетіп, өз сөзіммен өңдеймін","Өз жұмысым деп тапсырамын","Басқаға сатамын","Академиялық адалдық маңызды."]],
+mt:[["Машиналық оқыту",["📚","Оқыту деректері"],["🧪","Тексеру"],["🎯","Болжам"]],["ЖИ салалары",["🏥","Медицина"],["🌾","Ауыл шаруашылығы"],["🚦","Көлік"]],["ЖИ жауапкершілігі",["🔍","Тексеру"],["📝","Дереккөз көрсету"],["🛡️","Қауіпсіздік"]]]}};
+function choose(pool,n,s){return shuffle(pool.slice()).slice(0,n).map(function(x){x=x.slice();x.s=s;return x})}
+function pickMC(g){if(g<5)return choose(DATA[g],5,"");return shuffle(choose(INF[g].mc,3,SI).concat(choose(AI[g].mc,2,SA)))}
+function pickMT(g){var a=g<5?choose(MATCH[g],5,""):choose(INF[g].mt,3,SI).concat(choose(AI[g].mt,2,SA));return shuffle(a).map(function(x){return {m:1,t:x[0],p:x.slice(1),s:x.s}})}
+function renderMatch(q){
+  $("qt").textContent="Суретті атымен сәйкестендір: "+q.t;
+  var m=$("match");m.innerHTML="";
+  var L=document.createElement("div"),R=document.createElement("div");L.className=R.className="col";
+  var sel=null,done=0,bad=0,total=q.p.length;
+  q.p.forEach(function(p){var b=document.createElement("button");b.className="mi";b.textContent=p[0];b.setAttribute("aria-label","Сурет "+p[1]);b._n=p[1];
+    b.onclick=function(){if(b.disabled)return;if(sel)sel.classList.remove("sel");sel=b;b.classList.add("sel")};L.appendChild(b)});
+  shuffle(q.p.slice()).forEach(function(p){var b=document.createElement("button");b.className="mn";b.textContent=p[1];
+    b.onclick=function(){
+      if(!sel||b.disabled)return;
+      if(sel._n===p[1]){sel.classList.remove("sel");sel.classList.add("ok");b.classList.add("ok");sel.disabled=b.disabled=true;sel=null;done++;
+        if(done===total){if(!bad)score++;var n=$("note");n.textContent=bad?"Дайын! Қате саны: "+bad+". Келесі жолы қатесіз істейсің!":"Тамаша! Барлығын қатесіз таптың.";n.className="note show";
+          var nx=$("next");nx.classList.remove("hidden");nx.textContent=idx===qs.length-1?"Нәтижені көру":"Келесі сұрақ";nx.focus()}}
+      else{bad++;b.classList.add("bad");setTimeout(function(){b.classList.remove("bad")},500)}
+    };R.appendChild(b)});
+  m.appendChild(L);m.appendChild(R);
+}
+var grade,qs,idx,score,locked;
+function show(id){["home","quiz","result"].forEach(function(s){$(s).classList.toggle("hidden",s!==id)});window.scrollTo(0,0)}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function start(g){grade=g;
+  var mc=pickMC(g);
+  var mt=pickMT(g);
+  qs=mc.concat(mt);idx=0;score=0;show("quiz");render()}
+function render(){
+  var q=qs[idx];locked=false;
+  $("count").textContent=(idx+1)+" / "+qs.length;$("chip").textContent=q.s||"";
+  $("fill").style.width=(idx/qs.length*100)+"%";
+  $("qt").textContent=q[0];
+  $("note").className="note";$("next").classList.add("hidden");
+  $("match").classList.toggle("hidden",!q.m);$("opts").classList.toggle("hidden",!!q.m);
+  if(q.m){renderMatch(q);return}
+  $("qt").textContent=q[0];
+  var o=$("opts");o.innerHTML="";
+  var answers=shuffle(q.slice(1,4));
+  answers.forEach(function(a){
+    var b=document.createElement("button");b.className="opt";b.textContent=a;
+    b.onclick=function(){pick(b,a===q[1])};o.appendChild(b);
+  });
+}
+function pick(btn,right){
+  if(locked)return;locked=true;
+  var q=qs[idx];
+  [].forEach.call($("opts").children,function(b){b.disabled=true;if(b.textContent===q[1])b.classList.add("ok")});
+  if(right)score++;else btn.classList.add("bad");
+  var n=$("note");n.textContent=(right?"Дұрыс! ":"Дұрыс жауап: «"+q[1]+"». ")+q[4];n.className="note show";
+  var nx=$("next");nx.classList.remove("hidden");
+  nx.textContent=idx===qs.length-1?"Нәтижені көру":"Келесі сұрақ";nx.focus();
+}
+function finish(){
+  show("result");
+  var n=qs.length,st=score>=n-1?3:score>=Math.ceil(n*0.6)?2:score>=Math.ceil(n*0.3)?1:0,h="";
+  for(var i=0;i<3;i++)h+='<span class="'+(i<st?"":"off")+'">★</span>';
+  $("stars").innerHTML=h;
+  $("score").textContent=score+" / "+n;
+  $("msg").textContent=st===3?"Тамаша! Сен нағыз цифрлық шебер екенсің!":st===2?"Жарайсың! Тағы бір рет тапсырып көр.":"Қорықпа, қайталасаң міндетті түрде болады!";
+}
+$("next").onclick=function(){if(idx===qs.length-1)finish();else{idx++;render()}};
+$("back").onclick=function(){show("home")};
+$("again").onclick=function(){start(grade)};
+$("home2").onclick=function(){show("home")};
+[].forEach.call(document.querySelectorAll(".grade"),function(b){b.onclick=function(){start(b.getAttribute("data-g"))}});
+</script>
+</body>
+</html>
